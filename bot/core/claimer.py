@@ -77,6 +77,7 @@ class Claimer:
 
             return mining_data
         except Exception as error:
+            response = await http_client.post('https://gm.pocketfi.org/mining/createUserMining', json={})
             logger.error(f"{self.session_name} | Unknown error when getting Profile Data: {error}")
             await asyncio.sleep(delay=3)
 
