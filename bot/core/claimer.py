@@ -74,7 +74,8 @@ class Claimer:
 
             response_json = await response.json()
             mining_data = response_json['userMining']
-
+            if mining_data is None:
+                response = await http_client.post('https://gm.pocketfi.org/mining/createUserMining', json={})
             return mining_data
         except Exception as error:
             response = await http_client.post('https://gm.pocketfi.org/mining/createUserMining', json={})
