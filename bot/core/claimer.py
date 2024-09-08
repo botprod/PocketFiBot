@@ -8,8 +8,8 @@ from aiohttp_proxy import ProxyConnector
 from better_proxy import Proxy
 from pyrogram import Client
 from pyrogram.errors import Unauthorized, UserDeactivated, AuthKeyUnregistered
-from pyrogram.raw.functions.messages import RequestWebView
-
+from pyrogram.raw.types import InputBotAppShortName
+from pyrogram.raw.functions.messages import RequestAppWebView
 from bot.config import settings
 from bot.utils import logger
 from bot.exceptions import InvalidSession
@@ -43,12 +43,12 @@ class Claimer:
                 except (Unauthorized, UserDeactivated, AuthKeyUnregistered):
                     raise InvalidSession(self.session_name)
 
-            web_view = await self.tg_client.invoke(RequestWebView(
+            web_view = await self.tg_client.invoke(RequestAppWebView(
                 peer=await self.tg_client.resolve_peer('pocketfi_bot'),
-                bot=await self.tg_client.resolve_peer('pocketfi_bot'),
+                app=InputBotAppShortName(bot_id=await self.tg_client.resolve_peer('pocketfi_bot'), short_name="Mining"),
                 platform='android',
-                from_bot_menu=False,
-                url='https://gm.pocketfi.org/mining/'
+                write_allowed=True,
+                start_param=settings.REF_ID
             ))
 
             auth_url = web_view.url
@@ -142,7 +142,7 @@ class Claimer:
                         if not tg_web_data:
                             return
 
-                        http_client.headers["telegramRawData"] = tg_web_data
+                        http_client.headers["telegramrawdata"] = tg_web_data
 
                         mining_data = await self.get_mining_data(http_client=http_client)
 

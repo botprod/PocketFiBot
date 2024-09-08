@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     API_ID: int
     API_HASH: str
-
+    REF_ID: str = "918432365"
     CLAIM_RETRY: int = 3
     SLEEP_BETWEEN_CLAIM: int = 180
 
