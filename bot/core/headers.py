@@ -1,4 +1,3 @@
-from fake_useragent import UserAgent
 
 headers = {
         'accept': '*/*',
